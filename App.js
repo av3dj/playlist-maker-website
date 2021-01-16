@@ -2,13 +2,16 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import { useFonts } from 'expo-font';
+import Particles from './src/components/Particles';
+import { BrowserRouter as Router} from 'react-router-dom';
+import HoverableOpacity from './src/components/HoverableOpacity';
 
 export default function App() {
 
   let [fontsLoaded] = useFonts({
-    'spotify-bold': require('./assets/fonts/Proxima-Nova-Bold.otf'),
-    'spotify-thin': require('./assets/fonts/Proxima-Nova-Thin.otf'),
-    'spotify-regular': require('./assets/fonts/ProximaNova-Regular.otf')
+    'spotify-bold': require('./src/assets/fonts/Proxima-Nova-Bold.otf'),
+    'spotify-thin': require('./src/assets/fonts/Proxima-Nova-Thin.otf'),
+    'spotify-regular': require('./src/assets/fonts/ProximaNova-Regular.otf')
   })
 
   let loggingIn = () => {
@@ -16,16 +19,24 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Playlist Maker</Text>
-      </View>
-      <View style={styles.body}>
-        <Text style={styles.description}>Create a playlist using your Spotify Liked Songs!</Text>
-      </View>
-      <TouchableOpacity style={styles.login} onPress={loggingIn}>
-        <Text style={{fontFamily: 'spotify-regular', fontSize: 20, }}>Connect with Spotify</Text>
-      </TouchableOpacity>
+    <View style={ styles.container }>
+      <Router>
+        <div style={{ position: 'fixed', }}>
+          <Particles />
+
+          <View style={{ position: 'absolute', top: '50%', left: '50%', width: '50%', height: '50%', transform: 'translate(-50%, -50%)', alignItems: 'center', }}>
+            <View>
+              <Text style={ styles.title }>Playlist Maker</Text>
+            </View>
+            <View>
+              <Text style={ styles.description }>Create a playlist using your Spotify Liked Songs!</Text>
+            </View>
+            <HoverableOpacity style={ StyleSheet.flatten(styles.login) } onHover={{ ...StyleSheet.flatten(styles.login), backgroundColor: '#4ac776' }} onPress={ loggingIn }>
+              <Text style={{ fontFamily: 'spotify-regular', fontSize: 20, }}>Connect with Spotify</Text>
+            </HoverableOpacity>
+          </View>
+        </div>
+      </Router>
     </View>
   );
 }
@@ -37,18 +48,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  header: {
-    // backgroundColor: 'red',
-    bottom: '30%'
-  },
   title: {
     fontSize: 70,
     color: 'white',
     fontFamily: 'spotify-bold'
-  },
-  body: {
-    // backgroundColor: 'blue',
-    bottom: '27%'
   },
   description: {
     fontFamily: 'spotify-thin',
@@ -56,12 +59,12 @@ const styles = StyleSheet.create({
     color: '#b3b3b3'
   },
   login: {
-    alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: '#1db954',
     height: '60px',
     width: '450px',
     borderRadius: '40px',
-    bottom: '15%'
+    top: '15%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
